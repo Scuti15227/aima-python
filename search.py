@@ -18,35 +18,51 @@ class Problem:
     __init__, goal_test, and path_cost. Then you will create instances
     of your subclass and solve them with the various search functions."""
 
-    def __init__(self, initial, goal=None):
+    def __init__(self, initial):
         """The constructor specifies the initial state, and possibly a goal
         state, if there is a unique goal. Your subclass's constructor can add
         other arguments."""
         self.initial = initial
-        self.goal = goal
 
     def actions(self, state):
         """Return the actions that can be executed in the given
         state. The result would typically be a list, but if there are
         many actions, consider yielding them one at a time in an
         iterator, rather than building them all at once."""
-        raise NotImplementedError
+        actions = []
+        i = 1
+        while i <= self.initial[4]:
+            if (state[2] == 1 and state[0] - i >= state[1]) or (state[2] == 0 and self.initial[0] - state[0] - i >= self.initial[1] - state[1]):
+                actions.append([i, 0])
+            j = 0
+            while j <= i:
+                if(state[2] == 1 and state[0] - i >= state[1] - j and self.initial[0] - state[0] + i >= self.initial[1] - state[1] + j) or (state[2] == 0 and self.initial[0] - state[0] - i >= self.initial[1] - state[1] - j and state[0] + i >= state[1] + j):
+                    actions.append([i, j])
+        return actions
 
     def result(self, state, action):
         """Return the state that results from executing the given
         action in the given state. The action must be one of
         self.actions(state)."""
-        raise NotImplementedError
+        new = []
+        if state[3] == 0:
+            new[0] = state[0] + action[0]
+            new[1] = state[1] + action[1]
+            new[2] = 1
+        else:
+            new[0] = state[0] - action[0]
+            new[1] = state[1] - action[1]
+            new[2] = 0
+        return
 
     def goal_test(self, state):
         """Return True if the state is a goal. The default method compares the
         state to self.goal or checks for state in self.goal if it is a
         list, as specified in the constructor. Override this method if
         checking against a single self.goal is not enough."""
-        if isinstance(self.goal, list):
-            return is_in(state, self.goal)
-        else:
-            return state == self.goal
+        if state[0] == 0 and state[1] == 0 and state[2] == 0:
+            return True
+        return False
 
     def path_cost(self, c, state1, action, state2):
         """Return the cost of a solution path that arrives at state2 from
