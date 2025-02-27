@@ -269,9 +269,11 @@ def best_first_graph_search(problem, f, display=False):
     node = Node(problem.initial)
     frontier = PriorityQueue('min', f)
     frontier.append(node)
+    count = 1
     explored = set()
     while frontier:
         node = frontier.pop()
+        count+=1
         if problem.goal_test(node.state):
             if display:
                 print(len(explored), "paths have been expanded and", len(frontier), "paths remain in the frontier")
@@ -284,7 +286,7 @@ def best_first_graph_search(problem, f, display=False):
                 if f(child) < frontier[child]:
                     del frontier[child]
                     frontier.append(child)
-    return None
+    return count
 
 
 def uniform_cost_search(problem, display=False):
