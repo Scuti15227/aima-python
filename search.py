@@ -75,7 +75,7 @@ class Problem:
     def value(self, state):
         """For optimization problems, each state has a value. Hill Climbing
         and related algorithms try to maximize this value."""
-        raise NotImplementedError
+        return (state[0] + state[1]) / state[2]
 
 
 # ______________________________________________________________________________
@@ -341,7 +341,6 @@ def iterative_deepening_search(problem):
 # ______________________________________________________________________________
 # Bidirectional Search
 # Pseudocode from https://webdocs.cs.ualberta.ca/%7Eholte/Publications/MM-AAAI2016.pdf
-
 def bidirectional_search(problem):
     e = 0
     if isinstance(problem, GraphProblem):
@@ -432,8 +431,7 @@ def astar_search(problem, h=None, display=False):
     """A* search is best-first graph search with f(n) = g(n)+h(n).
     You need to specify the h function when you call astar_search, or
     else in your Problem subclass."""
-    h = memoize(h or problem.h, 'h')
-    return best_first_graph_search(problem, lambda n: n.path_cost + h(n), display)
+    return best_first_graph_search(problem, lambda n: n.path_cost + (state[0] + state[1]) / state[2], display)
 
 
 # ______________________________________________________________________________
