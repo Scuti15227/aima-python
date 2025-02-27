@@ -31,7 +31,7 @@ class Problem:
         iterator, rather than building them all at once."""
         actions = []
         i = 1
-        while i <= self.initial[4]:
+        while i <= self.initial[3]:
             if (state[2] == 1 and state[0] - i >= state[1]) or (state[2] == 0 and self.initial[0] - state[0] - i >= self.initial[1] - state[1]):
                 actions.append([i, 0])
             j = 0
